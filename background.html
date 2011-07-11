@@ -1,0 +1,47 @@
+<html>
+  <head>
+	<style>
+	</style>
+
+	<script>
+
+	var voteCount = 0;
+    var voteUrl = "http://givebacktoschools.avery.com/votes/create?sid=55708"
+	var pollInterval = 1000 * 60 * 60 * 24; // 1 day in milliseconds
+	var timerId;
+	
+	function updateBadge() {
+	  voteCount++;
+	  chrome.browserAction.setBadgeText({text:voteCount.toString()});
+	}
+	
+    function vote() {
+	  var xhr = new XMLHttpRequest();
+	  xhr.onreadystatechange = function(data) {
+	    if (xhr.readyState == 4) {
+	      if (xhr.status == 200) {
+	        document.getElementById("login-form").innerHTML = xhr.responseText;
+	      }
+	    }
+	  }
+	  // Note that any URL fetched here must be matched by a permission in
+	  // the manifest.json file!
+	  xhr.open('GET', voteUrl, true);
+	  xhr.send();
+    }
+
+	function startRequest() {
+		vote();
+	    updateBadge();
+	    timerId = window.setTimeout(startRequest, pollInterval);
+	}
+
+	function stopRequest() {
+	    window.clearTimeout(timerId);
+	}
+
+	</script>
+  </head>
+  <body onload='startRequest()'>
+  </body>
+</html>

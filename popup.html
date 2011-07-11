@@ -1,0 +1,22 @@
+<script>
+
+	function fetchLogin() {
+	  var xhr = new XMLHttpRequest();
+	  xhr.onreadystatechange = function(data) {
+	    if (xhr.readyState == 4) {
+	      if (xhr.status == 200) {
+	        document.getElementById("login-form").innerHTML = xhr.responseText;
+	      }
+	    }
+	  }
+	  // Note that any URL fetched here must be matched by a permission in
+	  // the manifest.json file!
+	  var url = 'http://givebacktoschools.avery.com/site/login';
+	  xhr.open('GET', url, true);
+	  xhr.send();
+	};
+	
+	fetchLogin();
+	
+</script>
+<div id="login-form"></div>
