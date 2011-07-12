@@ -1,13 +1,10 @@
 <html>
   <head>
-	<style>
-	</style>
-
 	<script>
 
 	var voteCount = 0;
-    var voteUrl = "http://givebacktoschools.avery.com/votes/create?sid=55708"
-	var pollInterval = 1000 * 60 * 60 * 24; // 1 day in milliseconds
+	var schoolUrl = "http://givebacktoschools.avery.com/schools/55708";
+	var pollInterval = 1000 * 60 * 60 * 24; // 1 day in millis - you can only vote once per day
 	var timerId;
 	
 	function updateBadge() {
@@ -15,23 +12,14 @@
 	  chrome.browserAction.setBadgeText({text:voteCount.toString()});
 	}
 	
-    function vote() {
-	  var xhr = new XMLHttpRequest();
-	  xhr.onreadystatechange = function(data) {
-	    if (xhr.readyState == 4) {
-	      if (xhr.status == 200) {
-	        document.getElementById("login-form").innerHTML = xhr.responseText;
-	      }
-	    }
-	  }
-	  // Note that any URL fetched here must be matched by a permission in
-	  // the manifest.json file!
-	  xhr.open('GET', voteUrl, true);
-	  xhr.send();
+    function gotoSchool() {
+		var tabId;
+		chrome.tabs.create({url:schoolUrl});
     }
 
 	function startRequest() {
-		vote();
+		gotoSchool();
+        chrome.tabs.executeScript(null, {file: "vote.js"});
 	    updateBadge();
 	    timerId = window.setTimeout(startRequest, pollInterval);
 	}

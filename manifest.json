@@ -8,6 +8,6 @@
     "default_icon": "icon.png"
   },
   "permissions": [
-    "http://givebacktoschools.avery.com/*"
+    "tabs", "http://givebacktoschools.avery.com/*"
   ]
 }
